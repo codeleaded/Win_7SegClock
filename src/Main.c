@@ -56,28 +56,34 @@ void Setup(AlxWindow* w){
 	s7 = DD7Segment_New("./assets",200,400);
 }
 void Update(AlxWindow* w){
-	Timepoint now_hours = Time_Hour();
-	Timepoint now_mins = Time_Min();
-	Timepoint now_secs = Time_Sec();
+	char buffer[128];
+	memset(buffer,0,sizeof(buffer));
+	Time_Str(buffer,Time_Nano());
+	printf("\r%s",buffer);
+
+	Time_t now = Time_Get(Time_Nano());
 	
 	Clear(BLACK);
 
-	float px = 100.0f;
+	float px = 100.0f - 200.0f;
 	float py = 100.0f;
-	Sprite_Render(WINDOW_STD_ARGS,s7.digits + (now_hours / 10),px += 200.0f,py);
-	Sprite_Render(WINDOW_STD_ARGS,s7.digits + (now_hours % 10),px += 200.0f,py);
+	Sprite_RenderAlpha(WINDOW_STD_ARGS,s7.digits + (now.Hour / 10) % 10,px += 210.0f,py);
+	Sprite_RenderAlpha(WINDOW_STD_ARGS,s7.digits + (now.Hour % 10),px += 210.0f,py);
 	
 	px += 100.0f;
-	Sprite_Render(WINDOW_STD_ARGS,s7.digits + (now_hours / 10),px += 200.0f,py);
-	Sprite_Render(WINDOW_STD_ARGS,s7.digits + (now_hours % 10),px += 200.0f,py);
+	Sprite_RenderAlpha(WINDOW_STD_ARGS,s7.digits + (now.Min / 10) % 10,px += 210.0f,py);
+	Sprite_RenderAlpha(WINDOW_STD_ARGS,s7.digits + (now.Min % 10),px += 210.0f,py);
 	
+	px += 100.0f;
+	Sprite_RenderAlpha(WINDOW_STD_ARGS,s7.digits + (now.Sec / 10) % 10,px += 210.0f,py);
+	Sprite_RenderAlpha(WINDOW_STD_ARGS,s7.digits + (now.Sec % 10),px += 210.0f,py);
 }
 void Delete(AlxWindow* w){
 	DD7Segment_Free(&s7);
 }
 
 int main(){
-    if(Create("7 Segment Display For Clock",1400,600,1,1,Setup,Update,Delete))
+    if(Create("7 Segment Display For Clock",1900,600,1,1,Setup,Update,Delete))
         Start();
     return 0;
 }
