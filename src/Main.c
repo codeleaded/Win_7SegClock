@@ -1,53 +1,7 @@
 //#define IMAGE_PNG_ONLY
 
 #include "/home/codeleaded/System/Static/Library/WindowEngine1.0.h"
-
-typedef struct DD7Segment {
-	Sprite* digits;
-	unsigned int count;
-	unsigned int width;
-	unsigned int height;
-	char* path;
-} DD7Segment;
-
-void DD7Segment_Load(DD7Segment* s7,unsigned int width,unsigned int height){
-	if(s7->width != width || s7->height != height){
-		for(int i = 0;i<s7->count;i++){
-			Sprite* sp = s7->digits + i;
-
-			CStr name = CStr_Format("%s/%d.png",s7->path,i);
-			Sprite_Free(sp);
-			*sp = Sprite_Load(name);
-			Sprite_Resize(sp,width,height);
-			CStr_Free(&name);
-		}
-		s7->width = width;
-		s7->height = height;
-	}
-}
-DD7Segment DD7Segment_New(char* path,unsigned int width,unsigned int height){
-	DD7Segment s7;
-	s7.count = 10U;
-	s7.width = 0U;
-	s7.height = 0U;
-	s7.path = CStr_Cpy(path);
-	s7.digits = (Sprite*)malloc(sizeof(Sprite) * s7.count);
-	memset(s7.digits,0,sizeof(Sprite) * s7.count);
-
-	DD7Segment_Load(&s7,width,height);
-	return s7;
-}
-void DD7Segment_Free(DD7Segment* s7){
-	if(s7->digits){
-		for(int i = 0;i<s7->count;i++){
-			Sprite* sp = s7->digits + i;
-			Sprite_Free(sp);
-		}
-		free(s7->digits);
-	}
-	CStr_Free(&s7->path);
-}
-
+#include "/home/codeleaded/System/Static/Library/DD7Segment.h"
 
 
 DD7Segment s7;
