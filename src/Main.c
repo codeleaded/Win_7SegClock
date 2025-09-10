@@ -12,10 +12,10 @@ void Setup(AlxWindow* w){
 void Update(AlxWindow* w){
 	char buffer[128];
 	memset(buffer,0,sizeof(buffer));
-	Time_Str(buffer,Time_Nano());
+	Time_Str(buffer,Time_Real_Nano());
 	printf("\r%s",buffer);
 
-	Time_t now = Time_Get(Time_Nano());
+	Time_t now = Time_Get(Time_Real_Nano());
 	
 	Clear(BLACK);
 
